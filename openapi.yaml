@@ -1,0 +1,144 @@
+openapi: 3.0.1
+info:
+  title: MS00365 - Ms.Adapter.Bandi
+  version: v1
+paths:
+  /api/_sample:
+    post:
+      tags:
+        - _Sample
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_SampleCreateCommand'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/_SampleCreateCommand'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/_SampleCreateCommand'
+      responses:
+        '201':
+          description: Created
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/_SampleOutput'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_SampleOutput'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/_SampleOutput'
+  /api/_sample/search:
+    post:
+      tags:
+        - _Sample
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MyPaginatedInput_SampleOutputDataTableCmdRequestViewModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/MyPaginatedInput_SampleOutputDataTableCmdRequestViewModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MyPaginatedInput_SampleOutputDataTableCmdRequestViewModel'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/_SampleOutputDataTableResultViewModel'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_SampleOutputDataTableResultViewModel'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/_SampleOutputDataTableResultViewModel'
+components:
+  schemas:
+    DataTableContextViewModel:
+      type: object
+      properties:
+        pc:
+          $ref: '#/components/schemas/PaginationContextViewModel'
+        sc:
+          type: array
+          items:
+            $ref: '#/components/schemas/SortContextViewModel'
+          nullable: true
+      additionalProperties: false
+    MyPaginatedInput:
+      type: object
+      properties:
+        myFilterByName:
+          type: string
+          nullable: true
+      additionalProperties: false
+    MyPaginatedInput_SampleOutputDataTableCmdRequestViewModel:
+      type: object
+      properties:
+        dtc:
+          $ref: '#/components/schemas/DataTableContextViewModel'
+        input:
+          $ref: '#/components/schemas/MyPaginatedInput'
+      additionalProperties: false
+    PaginationContextViewModel:
+      type: object
+      properties:
+        grandTotal:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+      additionalProperties: false
+    SortContextViewModel:
+      type: object
+      properties:
+        dir:
+          $ref: '#/components/schemas/SortDirection'
+        prop:
+          type: string
+          nullable: true
+      additionalProperties: false
+    SortDirection:
+      enum:
+        - asc
+        - desc
+      type: string
+    _SampleCreateCommand:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    _SampleOutput:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    _SampleOutputDataTableResultViewModel:
+      type: object
+      properties:
+        dtc:
+          $ref: '#/components/schemas/DataTableContextViewModel'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/_SampleOutput'
+          nullable: true
+      additionalProperties: false
